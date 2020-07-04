@@ -10,17 +10,22 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from activity_adder import Ui_ActivityAdder
+from settings import Ui_SettingsManager
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         self.main_window = MainWindow
+
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(920, 837)
+
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setAutoFillBackground(False)
         self.centralwidget.setObjectName("centralwidget")
+
         self.add_activity = QtWidgets.QPushButton(self.centralwidget)
-        self.add_activity.setGeometry(QtCore.QRect(360, 220, 211, 111))
+        self.add_activity.setGeometry(QtCore.QRect(220, 210, 211, 111))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(16)
@@ -37,6 +42,21 @@ class Ui_MainWindow(object):
         self.add_activity.setDefault(False)
         self.add_activity.setFlat(False)
         self.add_activity.setObjectName("add_activity")
+
+        self.achievements = QtWidgets.QPushButton(self.centralwidget)
+        self.achievements.setGeometry(QtCore.QRect(490, 210, 211, 111))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(14)
+        self.achievements.setFont(font)
+        self.achievements.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.achievements.setMouseTracking(False)
+        # icon4 = QtGui.QIcon()
+        # icon4.addPixmap(QtGui.QPixmap("images/trophy.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        # self.achievements.setIcon(icon4)
+        # self.achievements.setIconSize(QtCore.QSize(50, 50))
+        self.achievements.setObjectName("achievements")
+
         self.stats = QtWidgets.QPushButton(self.centralwidget)
         self.stats.setGeometry(QtCore.QRect(220, 370, 211, 111))
         font = QtGui.QFont()
@@ -49,6 +69,7 @@ class Ui_MainWindow(object):
         self.stats.setIcon(icon1)
         self.stats.setIconSize(QtCore.QSize(40, 40))
         self.stats.setObjectName("stats")
+
         self.settings = QtWidgets.QPushButton(self.centralwidget)
         self.settings.setGeometry(QtCore.QRect(490, 370, 211, 111))
         font = QtGui.QFont()
@@ -61,6 +82,7 @@ class Ui_MainWindow(object):
         self.settings.setIcon(icon2)
         self.settings.setIconSize(QtCore.QSize(40, 40))
         self.settings.setObjectName("settings")
+
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(0, 0, 921, 791))
         self.label.setText("")
@@ -70,6 +92,7 @@ class Ui_MainWindow(object):
         self.label.raise_()
         self.add_activity.raise_()
         self.stats.raise_()
+        self.achievements.raise_()
         self.settings.raise_()
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
@@ -84,17 +107,27 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
         self.add_activity.clicked.connect(self.open_activity_adder)
+        self.settings.clicked.connect(self.open_settings_manager)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "ActivityManager"))
+        self.achievements.setText(_translate("MainWindow", "ACHIEVEMENTS"))
         self.add_activity.setText(_translate("MainWindow", "ADD "))
         self.stats.setText(_translate("MainWindow", "STATISTICS"))
         self.settings.setText(_translate("MainWindow", "SETTINGS"))
 
+
     def open_activity_adder(self):
         self.ActivityAdder = QtWidgets.QMainWindow()
-        self.ui = Ui_ActivityAdder()
-        self.ui.setupUi(self.ActivityAdder)
+        self.ui_adder = Ui_ActivityAdder()
+        self.ui_adder.setupUi(self.ActivityAdder, self.main_window)
         self.ActivityAdder.show()
-        # self.main_window.hide()
+        self.main_window.hide()
+
+    def open_settings_manager(self):
+        self.SettingsManager = QtWidgets.QMainWindow()
+        self.ui_settings = Ui_SettingsManager()
+        self.ui_settings.setupUi(self.SettingsManager, self.main_window)
+        self.SettingsManager.show()
+        self.main_window.hide()
