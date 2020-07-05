@@ -41,9 +41,19 @@ class Ui_ActivityAdder(object):
         self.summary_text_input.setObjectName("summary_text_input")
 
         self.duration_setter = QtWidgets.QSpinBox(self.centralwidget)
-        self.duration_setter.setGeometry(QtCore.QRect(490, 390, 42, 22))
+        self.duration_setter.setGeometry(QtCore.QRect(490, 350, 48, 22))
         self.duration_setter.setMaximum(300)
         self.duration_setter.setObjectName("duration_setter")
+
+        self.activity_grade = QtWidgets.QSpinBox(self.centralwidget)
+        self.activity_grade.setGeometry(QtCore.QRect(490, 390, 48, 22))
+        self.activity_grade.setMaximum(10)
+        self.activity_grade.setObjectName("duration_setter")
+
+        self.distance_setter = QtWidgets.QDoubleSpinBox(self.centralwidget)
+        self.distance_setter.setGeometry(QtCore.QRect(490, 440, 48, 22))
+        self.distance_setter.setMaximum(300)
+        self.distance_setter.setObjectName("duration_setter")
 
         self.activity_box = QtWidgets.QComboBox(self.centralwidget)
         self.activity_box.setGeometry(QtCore.QRect(470, 300, 73, 22))
@@ -52,13 +62,24 @@ class Ui_ActivityAdder(object):
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(220, 300, 171, 20))
         self.label.setObjectName("label")
+        self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(240, 390, 171, 20))
+        self.label_2.setGeometry(QtCore.QRect(240, 350, 171, 20))
         self.label_2.setObjectName("label_2")
+        self.label_2.setAlignment(QtCore.Qt.AlignCenter)
         self.label_3 = QtWidgets.QLabel(self.centralwidget)
         self.label_3.setGeometry(QtCore.QRect(270, 480, 171, 20))
         self.label_3.setObjectName("label_3")
+        self.label_3.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_4 = QtWidgets.QLabel(self.centralwidget)
+        self.label_4.setGeometry(QtCore.QRect(250, 440, 171, 20))
+        self.label_4.setObjectName("label_4")
+        self.label_4.setAlignment(QtCore.Qt.AlignCenter)
 
+        self.label_5 = QtWidgets.QLabel(self.centralwidget)
+        self.label_5.setGeometry(QtCore.QRect(250, 390, 171, 20))
+        self.label_5.setObjectName("label_4")
+        self.label_5.setAlignment(QtCore.Qt.AlignCenter)
         ActivityAdder.setCentralWidget(self.centralwidget)
 
         self.menubar = QtWidgets.QMenuBar(ActivityAdder)
@@ -82,8 +103,10 @@ class Ui_ActivityAdder(object):
         self.cancel_button.setText(_translate("ActivityAdder", "Cancel"))
         self.save_button.setText(_translate("ActivityAdder", "Save"))
         self.label.setText(_translate("ActivityAdder", "What was your daily activity?"))
-        self.label_2.setText(_translate("ActivityAdder", "What was a duration?"))
+        self.label_2.setText(_translate("ActivityAdder", "What was a duration?[min]"))
+        self.label_4.setText(_translate("ActivityAdder", "What was a distance?[km]"))
         self.label_3.setText(_translate("ActivityAdder", "Summary"))
+        self.label_5.setText(_translate("ActivityAdder", "Grade(0-10)"))
 
     def to_main_menu(self):
         self.activity_adder.close()
@@ -95,6 +118,8 @@ class Ui_ActivityAdder(object):
             "time": datetime(time.year, time.month, time.day),
             "activity": self.activity_box.currentText(),
             "duration": self.duration_setter.value(),
+            "grade": self.activity_grade.value(),
+            "distance": self.distance_setter.value(),
             "summary": self.summary_text_input.toPlainText()
         }
         user_activities.insert_one(activity)
