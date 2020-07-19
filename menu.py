@@ -10,8 +10,8 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from activity_adder import Ui_ActivityAdder
-from settings import Ui_SettingsManager
-
+from manager_settings import Ui_SettingsManager
+from achievements import Ui_Achievements
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -106,8 +106,9 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-        self.add_activity.clicked.connect(self.open_activity_adder)
-        self.settings.clicked.connect(self.open_settings_manager)
+        self.add_activity.clicked.connect(lambda: self.open_another_window(Ui_ActivityAdder))
+        self.settings.clicked.connect(lambda: self.open_another_window(Ui_SettingsManager))
+        self.achievements.clicked.connect(lambda: self.open_another_window(Ui_Achievements))
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -117,17 +118,9 @@ class Ui_MainWindow(object):
         self.stats.setText(_translate("MainWindow", "STATISTICS"))
         self.settings.setText(_translate("MainWindow", "SETTINGS"))
 
-
-    def open_activity_adder(self):
-        self.ActivityAdder = QtWidgets.QMainWindow()
-        self.ui_adder = Ui_ActivityAdder()
-        self.ui_adder.setupUi(self.ActivityAdder, self.main_window)
-        self.ActivityAdder.show()
-        self.main_window.hide()
-
-    def open_settings_manager(self):
-        self.SettingsManager = QtWidgets.QMainWindow()
-        self.ui_settings = Ui_SettingsManager()
-        self.ui_settings.setupUi(self.SettingsManager, self.main_window)
-        self.SettingsManager.show()
+    def open_another_window(self, new_window_creator):
+        new_window = QtWidgets.QMainWindow()
+        self.creator = new_window_creator()
+        self.creator.setupUi(new_window, self.main_window)
+        new_window.show()
         self.main_window.hide()
