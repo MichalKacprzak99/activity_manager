@@ -9,6 +9,7 @@
 from datetime import datetime
 from pymongo import MongoClient
 from PyQt5 import QtCore, QtWidgets
+from settings import options, check_if_current_goal_is_reached
 root = MongoClient("localhost", 27017)
 activity_adder_db = root['activity_adder_db']
 user_activities = activity_adder_db['user_activities']
@@ -114,13 +115,15 @@ class Ui_ActivityAdder(object):
 
     def save(self):
         time = self.calendar.selectedDate().toPyDate()
+        iter_options = iter(options)
         activity = {
-            "time": datetime(time.year, time.month, time.day),
-            "activity": self.activity_box.currentText(),
-            "duration": self.duration_setter.value(),
-            "grade": self.activity_grade.value(),
-            "distance": self.distance_setter.value(),
-            "summary": self.summary_text_input.toPlainText()
+            next(iter_options): datetime(time.year, time.month, time.day),
+            next(iter_options): self.activity_box.currentText(),
+            next(iter_options): self.duration_setter.value(),
+            next(iter_options): self.activity_grade.value(),
+            next(iter_options): self.distance_setter.value(),
+            next(iter_options): self.summary_text_input.toPlainText()
         }
         user_activities.insert_one(activity)
+        check_if_current_goal_is_reached(self.activity_box.currentText(), settings, user_activities)
         self.to_main_menu()
